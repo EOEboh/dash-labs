@@ -4,10 +4,11 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
-    "build": "npm run zip-templates && next build",
+    "build": "npm run zip-templates && npm run generate-index && next build",
     "start": "next start",
     "lint": "next lint",
-    "zip-templates": "tsx scripts/package-templates.ts"
+    "zip-templates": "tsx scripts/package-templates.ts",
+    "generate-index": "tsx scripts/generate-template-index.ts"
   },
   "dependencies": {
     "adm-zip": "^0.5.16",

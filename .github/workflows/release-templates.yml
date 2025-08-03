@@ -1,0 +1,72 @@
+name: Release Templates
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-release:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # needed for tags
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Build templates
+        run: |
+          npm run zip-templates
+          npm run generate-index
+
+      - name: Commit and push template index
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add public/template-index.json
+          git commit -m "Update template index [CI]" || echo "No changes to commit"
+          git push origin main
+
+      - name: Get latest tag
+        id: get_tag
+        run: |
+          git fetch --tags
+          latest=$(git tag --sort=-v:refname | grep '^v' | head -n 1)
+          echo "Latest tag: $latest"
+          if [[ -z "$latest" ]]; then
+            next_tag="v1.0.0"
+          else
+            IFS='.' read -ra parts <<< "${latest#v}"
+            major=${parts[0]}
+            minor=${parts[1]}
+            patch=${parts[2]}
+            patch=$((patch + 1))
+            next_tag="v$major.$minor.$patch"
+          fi
+          echo "next_tag=$next_tag" >> $GITHUB_OUTPUT
+
+      - name: Create new tag
+        run: |
+          git tag ${{ steps.get_tag.outputs.next_tag }}
+          git push origin ${{ steps.get_tag.outputs.next_tag }}
+
+      - name: Upload release assets
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: ${{ steps.get_tag.outputs.next_tag }}
+          files: public/downloads/*.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
