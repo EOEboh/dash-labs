@@ -1,11 +1,10 @@
-import { templates } from "@/lib/templates";
+import { getTemplates } from "@/lib/templates";
 import { notFound } from "next/navigation";
 
-type Props = {
-  params: { slug: string };
-};
+type Props = { params: { slug: string } };
 
 export default function TemplateDetailPage({ params }: Props) {
+  const templates = getTemplates();
   const template = templates.find((t) => t.slug === params.slug);
 
   if (!template) return notFound();

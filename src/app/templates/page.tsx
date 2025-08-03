@@ -1,7 +1,13 @@
 import Link from "next/link";
-import { templates } from "@/lib/templates";
+import { getTemplates } from "@/lib/templates";
 
 export default function TemplatesPage() {
+  const templates = getTemplates();
+
+  if (templates.length === 0) {
+    return <p className="p-8 text-gray-500">No templates available yet.</p>;
+  }
+
   return (
     <main className="p-8">
       <h1 className="text-3xl font-bold mb-6">All Dashboard Templates</h1>
