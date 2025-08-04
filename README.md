@@ -133,3 +133,11 @@ Learn more about the power of Turborepo:
 - [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
 - [Configuration Options](https://turborepo.com/docs/reference/configuration)
 - [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+
+```
+git add .
+git commit -m "Add new template or fix"
+git push
+git tag v1.1.0
+git push origin v1.1.0
+```
