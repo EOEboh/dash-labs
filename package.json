@@ -1,31 +1,31 @@
 {
   "name": "dash-labs",
-  "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "npm run zip-templates && next build",
-    "start": "next start",
-    "lint": "next lint",
-    "zip-templates": "tsx scripts/package-templates.ts"
-  },
-  "dependencies": {
-    "adm-zip": "^0.5.16",
-    "next": "15.4.5",
-    "react": "19.1.0",
-    "react-dom": "19.1.0"
+    "build": "npm run zip-templates && npm run generate-index && turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "check-types": "turbo run check-types",
+    "zip-templates": "tsx scripts/package-templates.ts",
+    "generate-index": "tsx scripts/generate-template-index.ts"
   },
   "devDependencies": {
-    "@eslint/eslintrc": "^3",
-    "@tailwindcss/postcss": "^4",
     "@types/adm-zip": "^0.5.7",
-    "@types/node": "^20",
-    "@types/react": "^19",
-    "@types/react-dom": "^19",
-    "eslint": "^9",
-    "eslint-config-next": "15.4.5",
-    "tailwindcss": "^4",
+    "prettier": "^3.6.2",
     "tsx": "^4.20.3",
-    "typescript": "^5"
+    "turbo": "^2.5.5",
+    "typescript": "5.8.3"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "packageManager": "npm@11.3.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "dependencies": {
+    "adm-zip": "^0.5.16"
   }
 }
