@@ -28,7 +28,9 @@ jobs:
         run: npm ci
 
       - name: Build templates
-        env: GITHUB_REF: "refs/tags/${{ github.ref_name }}"
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
         run: |
           npm run zip-templates
           npm run generate-index
