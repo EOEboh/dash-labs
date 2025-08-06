@@ -8,6 +8,10 @@ on:
 jobs:
   generate-index:
     runs-on: ubuntu-latest
+
+    permissions:
+      contents: write # Ensure GitHub Actions has write permission to the repo
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -17,17 +21,18 @@ jobs:
         with:
           node-version: 20
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
       - name: Rebuild template index
-        run: |
-          npm run generate-index
+        run: npm run generate-index
 
       - name: Commit and push changes
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name "github-actions"
           git config user.email "github-actions@users.noreply.github.com"
           git add apps/gallery/public/template-index.json
           git commit -m "Update template index [CI]" || echo "No changes to commit"
-          git push origin main
+          git push https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }} HEAD:main || echo "Push skipped (likely not needed)"
