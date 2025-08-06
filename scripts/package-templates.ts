@@ -29,5 +29,5 @@ templates.forEach((templateName) => {
   const zip = new AdmZip();
   zip.addLocalFolder(inputDir);
   zip.writeZip(outputZip);
-  console.log(`✅ Created: ${outputZip}`);
+  console.log(` Created: ${outputZip}`);
 });
