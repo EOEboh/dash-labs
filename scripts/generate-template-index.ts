@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 const repo = process.env.GITHUB_REPOSITORY;
-const tag = process.env.RELEASE_TAG ?? "dev";
+const tag = process.env.GITHUB_REF_NAME ?? "dev"; // Use GitHub's built-in value
 
 const templatesDir = path.join(__dirname, "..", "apps", "templates");
 const outputFile = path.join(
@@ -38,7 +38,7 @@ const metadata = templateNames.map((slug) => {
     config = {
       ...config,
       ...parsed,
-      slug, // enforce consistent slug
+      slug,
     };
   }
 

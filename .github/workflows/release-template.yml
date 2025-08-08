@@ -35,11 +35,11 @@ jobs:
       - name: Build and generate template index
         env:
           GITHUB_REPOSITORY: ${{ github.repository }}
+          GITHUB_REF_NAME: ${{ github.ref_name }} # GitHub injects this anyway, but you can be explicit
         run: |
-          echo "📌 Using RELEASE_TAG: $RELEASE_TAG"
+          echo "🔖 Using tag: $GITHUB_REF_NAME"
           npm run zip-templates
           npm run generate-index
-          ls -lh apps/gallery/public/downloads
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
