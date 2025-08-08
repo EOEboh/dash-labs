@@ -3,7 +3,7 @@ name: Release Templates
 on:
   push:
     tags:
-      - "v*.*.*" # Trigger on version tags
+      - "v*.*.*" # e.g. v1.0.0
 
 jobs:
   build-and-release:
@@ -14,55 +14,34 @@ jobs:
       packages: write
 
     steps:
-      - name: Checkout
+      - name: Checkout code
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0 # needed for tags
+          fetch-depth: 0 # Ensure tags are available
 
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
-      - name: Install deps
+      - name: Install dependencies
         run: npm ci
 
-      - name: Build templates
+      - name: Build and generate template index
         env:
-          TAG_NAME: ${{ github.ref_name }}
           GITHUB_REPOSITORY: ${{ github.repository }}
-          RELEASE_TAG: ${{ steps.get_tag.outputs.next_tag }}
+          RELEASE_TAG: ${{ github.ref_name }}
         run: |
+          echo "🔖 Using tag: $RELEASE_TAG"
           npm run zip-templates
           npm run generate-index
-
-      - name: Get latest tag
-        id: get_tag
-        run: |
-          git fetch --tags
-          latest=$(git tag --sort=-v:refname | grep '^v' | head -n 1)
-          echo "Latest tag: $latest"
-          if [[ -z "$latest" ]]; then
-            next_tag="v1.0.0"
-          else
-            IFS='.' read -ra parts <<< "${latest#v}"
-            major=${parts[0]}
-            minor=${parts[1]}
-            patch=${parts[2]}
-            patch=$((patch + 1))
-            next_tag="v$major.$minor.$patch"
-          fi
-          echo "next_tag=$next_tag" >> $GITHUB_OUTPUT
-
-      - name: Create new tag
-        run: |
-          git tag ${{ steps.get_tag.outputs.next_tag }}
-          git push origin ${{ steps.get_tag.outputs.next_tag }}
+          ls -lh apps/gallery/public/downloads
 
       - name: Upload release assets
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: ${{ steps.get_tag.outputs.next_tag }}
+          tag_name: ${{ github.ref_name }}
           files: apps/gallery/public/downloads/*.zip
+          generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
