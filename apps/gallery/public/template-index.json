@@ -1,7 +1,9 @@
 [
   {
-    "name": "crm",
+    "name": "CRM Dashboard",
     "slug": "crm",
+    "description": "Manage customer relationships and sales pipelines easily.",
+    "category": "CRM",
     "downloadLink": "https://github.com/EOEboh/dash-labs/releases/download/dev/crm.zip",
     "previewLink": "https://crm.vercel.app",
     "image": "/images/crm-preview.png"

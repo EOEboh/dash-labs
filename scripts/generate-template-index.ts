@@ -2,13 +2,9 @@ import fs from "fs";
 import path from "path";
 
 const repo = process.env.GITHUB_REPOSITORY;
-const ref = process.env.GITHUB_REF ?? "refs/tags/dev";
-const tag = process.env.RELEASE_TAG ?? "dev"; // e.g. v1.0.0
+const tag = process.env.RELEASE_TAG ?? "dev";
 
-// Update this line to match the Turborepo layout
 const templatesDir = path.join(__dirname, "..", "apps", "templates");
-
-const downloadBase = `https://github.com/${repo}/releases/download/${tag}`;
 const outputFile = path.join(
   __dirname,
   "..",
@@ -18,17 +14,44 @@ const outputFile = path.join(
   "template-index.json"
 );
 
+const downloadBase = `https://github.com/${repo}/releases/download/${tag}`;
+
 const templateNames = fs
   .readdirSync(templatesDir)
   .filter((name) => fs.statSync(path.join(templatesDir, name)).isDirectory());
 
-const metadata = templateNames.map((name) => ({
-  name,
-  slug: name,
-  downloadLink: `${downloadBase}/${name}.zip`,
-  previewLink: `https://${name}.vercel.app`,
-  image: `/images/${name}-preview.png`,
-}));
+const metadata = templateNames.map((slug) => {
+  const templatePath = path.join(templatesDir, slug);
+  const configPath = path.join(templatePath, "template.json");
+
+  let config = {
+    name: slug,
+    slug,
+    description: "No description provided.",
+    category: "Uncategorized",
+    prodLink: `https://${slug}.vercel.app`,
+  };
+
+  if (fs.existsSync(configPath)) {
+    const content = fs.readFileSync(configPath, "utf-8");
+    const parsed = JSON.parse(content);
+    config = {
+      ...config,
+      ...parsed,
+      slug, // enforce consistent slug
+    };
+  }
+
+  return {
+    name: config.name,
+    slug: config.slug,
+    description: config.description,
+    category: config.category,
+    downloadLink: `${downloadBase}/${slug}.zip`,
+    previewLink: config.prodLink,
+    image: `/images/${slug}-preview.png`,
+  };
+});
 
 // Ensure output directory exists
 if (!fs.existsSync(path.dirname(outputFile))) {
