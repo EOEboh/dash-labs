@@ -4,7 +4,7 @@
     "slug": "crm",
     "description": "Manage customer relationships and sales pipelines easily.",
     "category": "CRM",
-    "downloadLink": "https://github.com/EOEboh/dash-labs/releases/download/main/crm.zip",
+    "downloadLink": "https://github.com/EOEboh/dash-labs/releases/download/v1.1.2/crm.zip",
     "previewLink": "https://crm.vercel.app",
     "image": "/images/crm-preview.png"
   }

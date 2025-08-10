@@ -2,7 +2,7 @@ import fs from "fs";
 import path from "path";
 
 const repo = process.env.GITHUB_REPOSITORY;
-const tag = process.env.GITHUB_REF_NAME ?? "dev"; // Use GitHub's built-in value
+const tag = "v1.1.2";
 
 const templatesDir = path.join(__dirname, "..", "apps", "templates");
 const outputFile = path.join(
