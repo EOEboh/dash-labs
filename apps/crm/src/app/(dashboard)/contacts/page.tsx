@@ -24,11 +24,11 @@ import {
 import { useContacts } from "@/hooks/use-contacts";
 import { ContactForm } from "@/components/contact-form";
 import { ConfirmDialog } from "@/components/confirm-dialog";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 import type { Contact } from "@/lib/types";
 
 export default function ContactsPage() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const { contacts, addContact, updateContact, deleteContact } = useContacts();
   const [query, setQuery] = useState("");
   const [sortBy, setSortBy] = useState<"name" | "email" | "status">("name");
@@ -55,19 +55,19 @@ export default function ContactsPage() {
 
   function onCreate(values: Omit<Contact, "id">) {
     addContact(values);
-    toast({
-      title: "Contact added",
-      description: `${values.name} was created.`,
-    });
+    // toast({
+    //   title: "Contact added",
+    //   description: `${values.name} was created.`,
+    // });
   }
 
   function onEdit(values: Omit<Contact, "id">) {
     if (!editing) return;
     updateContact(editing.id, values);
-    toast({
-      title: "Contact updated",
-      description: `${values.name} was updated.`,
-    });
+    // toast({
+    //   title: "Contact updated",
+    //   description: `${values.name} was updated.`,
+    // });
   }
 
   function onDelete() {
@@ -75,10 +75,10 @@ export default function ContactsPage() {
     const c = contacts.find((x) => x.id === confirm.id);
     deleteContact(confirm.id);
     setConfirm({ open: false });
-    toast({
-      title: "Contact deleted",
-      description: `${c?.name ?? "Contact"} was removed.`,
-    });
+    // toast({
+    //   title: "Contact deleted",
+    //   description: `${c?.name ?? "Contact"} was removed.`,
+    // });
   }
 
   return (

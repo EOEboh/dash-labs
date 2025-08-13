@@ -11,12 +11,12 @@ import { DealForm } from "@/components/deal-form";
 import type { Deal, DealStage } from "@/lib/types";
 import { DEAL_STAGES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 
 type DragInfo = { id: string; from: DealStage } | null;
 
 export default function DealsPage() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const { deals, addDeal, updateDeal, deleteDeal, moveDeal } = useDeals();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Deal | null>(null);
@@ -27,16 +27,16 @@ export default function DealsPage() {
 
   function onCreate(values: Omit<Deal, "id">) {
     addDeal(values);
-    toast({
-      title: "Deal added",
-      description: `${values.name} created in ${values.stage}.`,
-    });
+    // toast({
+    //   title: "Deal added",
+    //   description: `${values.name} created in ${values.stage}.`,
+    // });
   }
 
   function onEdit(values: Omit<Deal, "id">) {
     if (!editing) return;
     updateDeal(editing.id, values);
-    toast({ title: "Deal updated", description: `${values.name} updated.` });
+    // toast({ title: "Deal updated", description: `${values.name} updated.` });
   }
 
   function onDelete() {
@@ -44,10 +44,10 @@ export default function DealsPage() {
     const d = deals.find((x) => x.id === confirm.id);
     deleteDeal(confirm.id);
     setConfirm({ open: false });
-    toast({
-      title: "Deal deleted",
-      description: `${d?.name ?? "Deal"} removed.`,
-    });
+    // toast({
+    //   title: "Deal deleted",
+    //   description: `${d?.name ?? "Deal"} removed.`,
+    // });
   }
 
   const grouped: Record<DealStage, Deal[]> = DEAL_STAGES.reduce(
@@ -84,10 +84,10 @@ export default function DealsPage() {
               if (drag && drag.from !== stage) {
                 moveDeal(drag.id, stage);
                 setDrag(null);
-                toast({
-                  title: "Deal moved",
-                  description: `Moved to ${stage}.`,
-                });
+                // toast({
+                //   title: "Deal moved",
+                //   description: `Moved to ${stage}.`,
+                // });
               }
             }}
             aria-label={`${stage} column`}

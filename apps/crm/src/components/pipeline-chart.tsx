@@ -1,5 +1,6 @@
 "use client";
 
+import React, { memo } from "react";
 import {
   ResponsiveContainer,
   BarChart,
@@ -17,7 +18,7 @@ import {
 
 type Datum = { stage: string; value: number };
 
-export function PipelineChart({ data }: { data: Datum[] }) {
+function PipelineChartComponent({ data }: { data: Datum[] }) {
   return (
     <ChartContainer
       config={{
@@ -41,11 +42,11 @@ export function PipelineChart({ data }: { data: Datum[] }) {
             width={48}
           />
           <Tooltip
-            content={
-              <ChartTooltip>
-                <ChartTooltipContent />
+            content={(props) => (
+              <ChartTooltip {...props}>
+                <ChartTooltipContent label={props.label} />
               </ChartTooltip>
-            }
+            )}
           />
           <Bar
             dataKey="value"
@@ -57,3 +58,11 @@ export function PipelineChart({ data }: { data: Datum[] }) {
     </ChartContainer>
   );
 }
+
+// Only re-render if `data` has changed (shallow comparison)
+export const PipelineChart = memo(
+  PipelineChartComponent,
+  (prevProps, nextProps) => {
+    return JSON.stringify(prevProps.data) === JSON.stringify(nextProps.data);
+  }
+);

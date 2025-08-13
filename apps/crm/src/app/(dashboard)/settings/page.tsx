@@ -11,7 +11,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+// import { useToast } from "@/hooks/use-toast";
 
 type Profile = {
   name: string;
@@ -22,7 +22,7 @@ type Profile = {
 const STORAGE_KEY = "crm:profile";
 
 export default function SettingsPage() {
-  const { toast } = useToast();
+  // const { toast } = useToast();
   const [profile, setProfile] = useState<Profile>({
     name: "",
     email: "",
@@ -43,10 +43,10 @@ export default function SettingsPage() {
 
   function save() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(profile));
-    toast({
-      title: "Profile saved",
-      description: "Your settings have been updated.",
-    });
+    // toast({
+    //   title: "Profile saved",
+    //   description: "Your settings have been updated.",
+    // });
   }
 
   return (

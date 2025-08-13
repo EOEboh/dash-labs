@@ -1,4 +1,5 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import MetricChart from "./metric-chart";
 
 export function MetricCard({
   title,
@@ -10,12 +11,16 @@ export function MetricCard({
   delta?: string;
 }) {
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm overflow-hidden">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm text-muted-foreground">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <div className="text-2xl font-semibold">{value}</div>
+        <div className="text-2xl font-semibold flex justify-between items-center">
+          {value}
+
+          <MetricChart />
+        </div>
         {delta && (
           <div className="text-xs text-muted-foreground mt-1">
             {delta} this month
