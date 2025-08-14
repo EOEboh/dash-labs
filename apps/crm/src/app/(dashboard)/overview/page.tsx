@@ -1,5 +1,5 @@
 import { MetricCard } from "@/components/metric-card";
-// import { PipelineChart } from "@/components/pipeline-chart";
+import { PipelineChart } from "@/components/pipeline-chart";
 import { ActivityFeed } from "@/components/activity-feed";
 import { getInitialDealsByStage, getInitialActivities } from "@/lib/mock-data";
 // import { useMemo } from "react";
@@ -25,11 +25,12 @@ export default function OverviewPage() {
         aria-label="Pipeline and activity"
       >
         <div className="lg:col-span-2 rounded-xl border bg-card text-card-foreground p-4 md:p-6 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Sales Pipeline</h2>
-          {/* <PipelineChart data={pipelineData} /> */}
+          <h2 className="text-lg font-semibold mb-4">Performance</h2>
+
+          <PipelineChart />
         </div>
         <div className="rounded-xl border bg-card text-card-foreground p-4 md:p-6 shadow-sm">
-          <h2 className="text-lg font-semibold mb-4">Recent Activity</h2>
+          <h2 className="text-lg font-semibold mb-4">Top 5 Country Sales</h2>
           <ActivityFeed items={activities} />
         </div>
       </section>

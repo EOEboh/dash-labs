@@ -84,24 +84,18 @@ export function getInitialActivities() {
   return [
     {
       id: "a1",
-      user: "Jane Cooper",
-      action: "created deal",
-      target: "Pro Plan 100 seats",
-      time: "2 hours ago",
+      country: "USA",
+      flagImg: "flags/usa.svg",
     },
     {
       id: "a2",
-      user: "John Smith",
-      action: "updated contact",
-      target: "Devon Lane",
-      time: "5 hours ago",
+      country: "Nigeria",
+      flagImg: "flags/nigeria.svg",
     },
     {
       id: "a3",
-      user: "Ana Gomez",
-      action: "moved deal",
-      target: "Add-on Security → Proposal",
-      time: "1 day ago",
+      country: "Brazil",
+      flagImg: "flags/brazil.svg",
     },
   ];
 }

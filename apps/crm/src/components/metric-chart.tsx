@@ -44,7 +44,7 @@ export default function MetricChart() {
             <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8} />
           </BarChart>
         </ChartContainer>
-        <div className="flex leading-none p-0 text-right">
+        <div className="text-xs text-muted-foreground mt-1 text-right ">
           <a href="#" className="hover:underline">
             <small>See Details</small>
           </a>

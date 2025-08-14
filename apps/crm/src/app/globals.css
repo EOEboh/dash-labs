@@ -4,37 +4,42 @@
 @custom-variant dark (&:is(.dark *));
 
 :root {
-  --background: oklch(1 0 0);
+  /* Softer warm background instead of pure white */
+  --background: oklch(0.99 0.01 95); /* warm off-white */
   --foreground: oklch(0.145 0 0);
 
-  --card: oklch(1 0 0);
+  /* Slightly different from background for separation */
+  --card: oklch(0.985 0.01 95);
   --card-foreground: oklch(0.145 0 0);
 
-  --popover: oklch(1 0 0);
+  --popover: oklch(0.99 0.01 95);
   --popover-foreground: oklch(0.145 0 0);
 
-  /* Yellow primary (shadcn-like) */
-  /* hsl(47.9 95.8% 53.1%) ≈ yellow-400 */
+  /* Primary stays your vivid yellow */
   --primary: hsl(47.9 95.8% 53.1%);
   --primary-foreground: hsl(26 83% 14%);
 
-  --secondary: oklch(0.97 0 0);
+  /* Secondary: soft warm beige for contrast with yellow */
+  --secondary: oklch(0.96 0.02 95);
   --secondary-foreground: oklch(0.205 0 0);
 
-  --muted: oklch(0.97 0 0);
+  /* Muted for subtle UI areas */
+  --muted: oklch(0.94 0.01 95);
   --muted-foreground: oklch(0.556 0 0);
 
-  --accent: hsl(47.9 95.8% 90%);
+  /* Accent: very light warm yellow tint */
+  --accent: hsl(47.9 95.8% 88%);
   --accent-foreground: hsl(26 83% 14%);
 
   --destructive: hsl(0 84% 60%);
   --destructive-foreground: hsl(0 0% 100%);
 
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
+  /* Softer border tone */
+  --border: oklch(0.88 0 0);
+  --input: oklch(0.88 0 0);
   --ring: hsl(47.9 95.8% 53.1%);
 
-  /* Chart hues (tinted around yellow) */
+  /* Chart colors */
   --chart-1: hsl(47.9 95.8% 53.1%);
   --chart-2: hsl(35 92% 57%);
   --chart-3: hsl(20 90% 52%);
@@ -43,14 +48,14 @@
 
   --radius: 0.625rem;
 
-  /* Sidebar theming */
-  --sidebar: oklch(0.985 0 0);
+  /* Sidebar  */
+  --sidebar: oklch(0.985 0.01 95);
   --sidebar-foreground: oklch(0.145 0 0);
   --sidebar-primary: hsl(47.9 95.8% 53.1%);
   --sidebar-primary-foreground: hsl(26 83% 14%);
-  --sidebar-accent: hsl(47.9 95.8% 90%);
+  --sidebar-accent: hsl(47.9 95.8% 88%);
   --sidebar-accent-foreground: hsl(26 83% 14%);
-  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-border: oklch(0.88 0 0);
   --sidebar-ring: hsl(47.9 95.8% 53.1%);
 }
 
