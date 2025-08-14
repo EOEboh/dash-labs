@@ -86,16 +86,19 @@ export function getInitialActivities() {
       id: "a1",
       country: "USA",
       flagImg: "flags/usa.svg",
+      progressValue: 60,
     },
     {
       id: "a2",
       country: "Nigeria",
       flagImg: "flags/nigeria.svg",
+      progressValue: 30,
     },
     {
       id: "a3",
       country: "Brazil",
       flagImg: "flags/brazil.svg",
+      progressValue: 39,
     },
   ];
 }
