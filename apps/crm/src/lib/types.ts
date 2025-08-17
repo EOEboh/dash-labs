@@ -4,6 +4,9 @@ export type Contact = {
   email: string;
   status: "Active" | "Inactive" | (string & {});
   company?: string;
+  phone: string;
+  lastActivity: Date;
+  avatar?: string;
 };
 
 export type DealStage =

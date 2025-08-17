@@ -100,5 +100,17 @@ export function getInitialActivities() {
       flagImg: "flags/brazil.svg",
       progressValue: 39,
     },
+    {
+      id: "a4",
+      country: "South Africa",
+      flagImg: "flags/south-africa.svg",
+      progressValue: 39,
+    },
+    {
+      id: "a3",
+      country: "Canada",
+      flagImg: "flags/canada.svg",
+      progressValue: 49,
+    },
   ];
 }

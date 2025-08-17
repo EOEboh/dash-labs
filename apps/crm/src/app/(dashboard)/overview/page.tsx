@@ -2,11 +2,10 @@ import { MetricCard } from "@/components/metric-card";
 import { PipelineChart } from "@/components/pipeline-chart";
 import { ActivityFeed } from "@/components/activity-feed";
 import { getInitialDealsByStage, getInitialActivities } from "@/lib/mock-data";
-// import { useMemo } from "react";
+import { DataTable } from "@/components/sales-table/data-table";
+import SalesTable from "@/components/sales-table/main-table-view";
 
-export default function OverviewPage() {
-  // const pipelineData = useMemo(() => getInitialDealsByStage(), []);
-
+export default async function OverviewPage() {
   const activities = getInitialActivities();
 
   return (
@@ -22,7 +21,7 @@ export default function OverviewPage() {
 
       <section
         className="grid gap-6 lg:grid-cols-3"
-        aria-label="Pipeline and activity"
+        aria-label="Performance and activity"
       >
         <div className="lg:col-span-2 rounded-xl border bg-card text-card-foreground p-4 md:p-6 shadow-sm">
           <h2 className="text-lg font-semibold mb-4">Performance</h2>
@@ -32,6 +31,14 @@ export default function OverviewPage() {
         <div className="rounded-xl border bg-card text-card-foreground p-4 md:p-6 shadow-sm">
           <h2 className="text-lg font-semibold mb-4">Top 5 Country Sales</h2>
           <ActivityFeed items={activities} />
+        </div>
+      </section>
+      <section
+        className="grid gap-6 lg:grid-cols-3"
+        aria-label="Pipeline and activity"
+      >
+        <div className="lg:col-span-3">
+          <SalesTable />
         </div>
       </section>
     </div>
