@@ -1,30 +1,18 @@
 import type React from "react";
-export interface Contact {
+
+export type Deal = {
   id: string;
-  name: string;
+  dealName: string;
   company: string;
   email: string;
-  phone: string;
-  status: "active" | "inactive" | "prospect" | "customer";
+  owner: string;
+  stage: "prospect" | "negotiation" | "proposal" | "closed-won" | "closed-lost";
+  amount: number;
+  closeDate: Date;
   lastActivity: Date;
   avatar?: string;
-}
-
-export interface Deal {
-  id: string;
-  title: string;
-  company: string;
-  value: number;
-  stage:
-    | "lead"
-    | "qualified"
-    | "proposal"
-    | "negotiation"
-    | "closed-won"
-    | "closed-lost";
-  closeDate: Date;
-  probability: number;
-}
+  alt?: string;
+};
 
 export interface DataTableColumn<T> {
   id: string;

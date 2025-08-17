@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import { SalesTable } from "@/components/sales-table/sales-table";
-import { mockContacts } from "@/components/sales-table/mock-data";
+import { useTableSales } from "@/hooks/use-table-sales";
 import type { Contact } from "@/lib/types";
 import {
   Card,
@@ -16,6 +16,7 @@ import { Button } from "@/components/ui/button";
 
 export default function MainTable() {
   //   const { toast } = useToast()
+  const { data, isLoading, error } = useTableSales();
   const [selectedContacts, setSelectedContacts] = React.useState<Contact[]>([]);
 
   const handleRowSelect = (contacts: Contact[]) => {
@@ -66,11 +67,13 @@ export default function MainTable() {
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
-              <CardTitle>Sales Data</CardTitle>
-              <CardDescription>
+              <CardTitle>
+                <h2 className="text-lg font-semibold mb-4">Sales Data</h2>
+              </CardTitle>
+              {/* <CardDescription>
                 A comprehensive view of all your contacts with advanced
                 filtering and actions
-              </CardDescription>
+              </CardDescription> */}
             </div>
             <div className="flex space-x-2">
               <Button
@@ -95,7 +98,7 @@ export default function MainTable() {
         </CardHeader>
         <CardContent>
           <SalesTable
-            contacts={mockContacts}
+            data={data ?? []}
             onRowSelect={handleRowSelect}
             onView={handleView}
             onEdit={handleEdit}
