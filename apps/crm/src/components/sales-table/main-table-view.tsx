@@ -3,7 +3,7 @@
 import * as React from "react";
 import { SalesTable } from "@/components/sales-table/sales-table";
 import { useTableSales } from "@/hooks/use-table-sales";
-import type { Contact } from "@/lib/types";
+import type { Deal } from "@/components/sales-table/types";
 import {
   Card,
   CardContent,
@@ -17,27 +17,27 @@ import { Button } from "@/components/ui/button";
 export default function MainTable() {
   //   const { toast } = useToast()
   const { data, isLoading, error } = useTableSales();
-  const [selectedContacts, setSelectedContacts] = React.useState<Contact[]>([]);
+  const [selectedDeals, setSelectedDeals] = React.useState<Deal[]>([]);
 
-  const handleRowSelect = (contacts: Contact[]) => {
-    setSelectedContacts(contacts);
+  const handleRowSelect = (contacts: Deal[]) => {
+    setSelectedDeals(contacts);
   };
 
-  const handleView = (contact: Contact) => {
+  const handleView = (deal: Deal) => {
     // toast({
     //   title: "View Contact",
     //   description: `Viewing details for ${contact.name}`,
     // })
   };
 
-  const handleEdit = (contact: Contact) => {
+  const handleEdit = (deal: Deal) => {
     // toast({
     //   title: "Edit Contact",
     //   description: `Editing ${contact.name}`,
     // })
   };
 
-  const handleDelete = (contact: Contact) => {
+  const handleDelete = (deal: Deal) => {
     // toast({
     //   title: "Delete Contact",
     //   description: `Deleting ${contact.name}`,
@@ -46,7 +46,7 @@ export default function MainTable() {
   };
 
   const handleBulkAction = (action: string) => {
-    if (selectedContacts.length === 0) {
+    if (selectedDeals.length === 0) {
       //   toast({
       //     title: "No Selection",
       //     description: "Please select contacts first",
@@ -80,17 +80,17 @@ export default function MainTable() {
                 variant="outline"
                 size="sm"
                 onClick={() => handleBulkAction("Export")}
-                disabled={selectedContacts.length === 0}
+                disabled={selectedDeals.length === 0}
               >
-                Export ({selectedContacts.length})
+                Export ({selectedDeals.length})
               </Button>
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleBulkAction("Delete")}
-                disabled={selectedContacts.length === 0}
+                disabled={selectedDeals.length === 0}
               >
-                Delete ({selectedContacts.length})
+                Delete ({selectedDeals.length})
               </Button>
               <Button size="sm">Add Contact</Button>
             </div>

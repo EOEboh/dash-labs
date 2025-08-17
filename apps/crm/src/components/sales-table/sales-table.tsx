@@ -5,12 +5,12 @@ import { DataTable } from "./data-table";
 import type { Deal, DataTableColumn } from "./types";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
-interface ContactTableProps {
+interface SalesTableProps {
   data: Deal[];
-  onRowSelect?: (selectedContacts: Deal[]) => void;
-  onEdit?: () => void;
-  onView?: () => void;
-  onDelete?: () => void;
+  onRowSelect?: (selectedDeals: Deal[]) => void;
+  onEdit?: (deal: Deal) => void;
+  onView?: (deal: Deal) => void;
+  onDelete?: (deal: Deal) => void;
 }
 
 const statusColors = {
@@ -30,11 +30,10 @@ export function SalesTable({
   onEdit,
   onView,
   onDelete,
-}: ContactTableProps) {
+}: SalesTableProps) {
   const columns: DataTableColumn<Deal>[] = [
     {
       id: "avatar",
-      header: "",
       cell: (deal) => (
         <div className="flex items-center space-x-3">
           <Avatar className="h-8 w-8">
@@ -50,10 +49,6 @@ export function SalesTable({
                 .toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          {/* <div>
-            <div className="font-medium">{deal.dealName}</div>
-            <div className="text-sm text-muted-foreground">{deal.email}</div>
-          </div> */}
         </div>
       ),
       size: 50,
@@ -107,6 +102,20 @@ export function SalesTable({
         </Badge>
       ),
       size: 100,
+    },
+    {
+      id: "closeDate",
+      header: "Close Date",
+      accessorKey: "closeDate",
+      cell: (deal) => (
+        <div className="text-sm">
+          {new Intl.DateTimeFormat("en-US", {
+            month: "short",
+            day: "numeric",
+            year: "numeric",
+          }).format(new Date(deal.closeDate))}
+        </div>
+      ),
     },
     {
       id: "lastActivity",

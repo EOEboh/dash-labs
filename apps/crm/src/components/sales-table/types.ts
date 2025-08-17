@@ -16,7 +16,7 @@ export type Deal = {
 
 export interface DataTableColumn<T> {
   id: string;
-  header: string;
+  header?: string;
   accessorKey?: keyof T;
   cell?: (row: T) => React.ReactNode;
   enableSorting?: boolean;
