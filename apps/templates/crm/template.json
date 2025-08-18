@@ -1,7 +1,0 @@
-{
-  "name": "CRM Dashboard",
-  "slug": "crm",
-  "description": "Manage customer relationships and sales pipelines easily.",
-  "category": "CRM",
-  "prodLink": "https://crm.vercel.app"
-}
