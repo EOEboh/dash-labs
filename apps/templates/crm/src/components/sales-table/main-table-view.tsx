@@ -98,7 +98,7 @@ export default function MainTable() {
         </CardHeader>
         <CardContent className="p-0">
           <div className="overflow-x-auto w-full">
-            <div className="min-w-[800px]">
+            <div className="min-w-[800px] px-4">
               <SalesTable
                 data={data ?? []}
                 onRowSelect={handleRowSelect}
