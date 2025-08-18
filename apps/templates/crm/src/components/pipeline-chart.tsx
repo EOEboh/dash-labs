@@ -151,7 +151,7 @@ export function PipelineChart() {
   });
 
   return (
-    <Card className="pt-0">
+    <Card className="pt-0 border-none">
       <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
         <div className="grid flex-1 gap-1">
           <CardTitle>Online vs In-Store Sales Trends (Last 3 Months)</CardTitle>
