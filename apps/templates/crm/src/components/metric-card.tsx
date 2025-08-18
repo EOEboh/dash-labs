@@ -11,7 +11,7 @@ export function MetricCard({
   delta?: string;
 }) {
   return (
-    <Card className="shadow-sm overflow-hidden">
+    <Card className="shadow-sm border border-gray-200/60 overflow-hidden hover:border-gray-300/80 transition-colors">
       <CardHeader className="pb-2">
         <CardTitle className="text-sm text-muted-foreground">{title}</CardTitle>
       </CardHeader>

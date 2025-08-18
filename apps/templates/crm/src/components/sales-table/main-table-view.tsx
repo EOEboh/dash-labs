@@ -63,24 +63,21 @@ export default function MainTable() {
 
   return (
     <div className="container mx-auto py-4">
-      <Card>
+      <Card className="w-full">
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
             <div>
               <CardTitle>
                 <h2 className="text-lg font-semibold mb-4">Sales Data</h2>
               </CardTitle>
-              {/* <CardDescription>
-                A comprehensive view of all your contacts with advanced
-                filtering and actions
-              </CardDescription> */}
             </div>
-            <div className="flex space-x-2">
+            <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
               <Button
                 variant="outline"
                 size="sm"
                 onClick={() => handleBulkAction("Export")}
                 disabled={selectedDeals.length === 0}
+                className="w-full sm:w-auto"
               >
                 Export ({selectedDeals.length})
               </Button>
@@ -89,21 +86,28 @@ export default function MainTable() {
                 size="sm"
                 onClick={() => handleBulkAction("Delete")}
                 disabled={selectedDeals.length === 0}
+                className="w-full sm:w-auto"
               >
                 Delete ({selectedDeals.length})
               </Button>
-              <Button size="sm">Add Contact</Button>
+              <Button size="sm" className="w-full sm:w-auto">
+                Add Contact
+              </Button>
             </div>
           </div>
         </CardHeader>
-        <CardContent className="overflow-x-auto">
-          <SalesTable
-            data={data ?? []}
-            onRowSelect={handleRowSelect}
-            onView={handleView}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
+        <CardContent className="p-0">
+          <div className="overflow-x-auto w-full">
+            <div className="min-w-[800px] px-4">
+              <SalesTable
+                data={data ?? []}
+                onRowSelect={handleRowSelect}
+                onView={handleView}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            </div>
+          </div>
         </CardContent>
       </Card>
     </div>
