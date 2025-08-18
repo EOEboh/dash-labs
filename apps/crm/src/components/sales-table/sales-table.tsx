@@ -101,7 +101,7 @@ export function SalesTable({
           {deal.stage.charAt(0).toUpperCase() + deal.stage.slice(1)}
         </Badge>
       ),
-      size: 100,
+      size: 80,
     },
     {
       id: "closeDate",
@@ -116,6 +116,7 @@ export function SalesTable({
           }).format(new Date(deal.closeDate))}
         </div>
       ),
+      size: 80,
     },
     {
       id: "lastActivity",

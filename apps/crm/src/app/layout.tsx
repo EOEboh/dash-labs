@@ -30,7 +30,7 @@ export default function RootLayout({
                 <header className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
                   <div className="container mx-auto flex items-center gap-2 px-4 py-3">
                     <SidebarTrigger />
-                    <TopNav />
+                    <TopNav userName="John" />
                   </div>
                 </header>
                 <main className="container mx-auto flex-1 px-4 py-6">

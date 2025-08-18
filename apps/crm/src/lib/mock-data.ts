@@ -7,6 +7,8 @@ export const initialContacts: Contact[] = [
     email: "jane.cooper@example.com",
     status: "Active",
     company: "Acme Inc.",
+    phone: "+1-555-1234",
+    lastActivity: new Date("2024-06-01"),
   },
   {
     id: "c2",
@@ -14,6 +16,8 @@ export const initialContacts: Contact[] = [
     email: "devon.lane@example.com",
     status: "Active",
     company: "Globex",
+    phone: "+1-555-5678",
+    lastActivity: new Date("2024-05-28"),
   },
   {
     id: "c3",
@@ -21,6 +25,8 @@ export const initialContacts: Contact[] = [
     email: "courtney.henry@example.com",
     status: "Inactive",
     company: "Initech",
+    phone: "+1-555-8765",
+    lastActivity: new Date("2024-05-15"),
   },
   {
     id: "c4",
@@ -28,6 +34,8 @@ export const initialContacts: Contact[] = [
     email: "wade.warren@example.com",
     status: "Active",
     company: "Umbrella",
+    phone: "+1-555-4321",
+    lastActivity: new Date("2024-06-03"),
   },
 ];
 
@@ -107,7 +115,7 @@ export function getInitialActivities() {
       progressValue: 39,
     },
     {
-      id: "a3",
+      id: "a5",
       country: "Canada",
       flagImg: "flags/canada.svg",
       progressValue: 49,

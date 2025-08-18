@@ -1,8 +1,7 @@
 import { MetricCard } from "@/components/metric-card";
 import { PipelineChart } from "@/components/pipeline-chart";
 import { ActivityFeed } from "@/components/activity-feed";
-import { getInitialDealsByStage, getInitialActivities } from "@/lib/mock-data";
-import { DataTable } from "@/components/sales-table/data-table";
+import { getInitialActivities } from "@/lib/mock-data";
 import SalesTable from "@/components/sales-table/main-table-view";
 
 export default async function OverviewPage() {
