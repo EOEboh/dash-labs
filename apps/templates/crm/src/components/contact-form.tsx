@@ -33,14 +33,31 @@ export function ContactForm({
     email: "",
     status: "Active",
     company: "",
+    phone: "",
+    lastActivity: new Date(),
   });
 
   useEffect(() => {
     if (initialValues) {
-      const { id, ...rest } = initialValues;
-      setValues(rest);
+      const { name, email, status, company, phone, lastActivity } =
+        initialValues;
+      setValues({
+        name: name ?? "",
+        email: email ?? "",
+        status: status ?? "Active",
+        company: company ?? "",
+        phone: phone ?? "",
+        lastActivity: lastActivity ? new Date(lastActivity) : new Date(),
+      });
     } else {
-      setValues({ name: "", email: "", status: "Active", company: "" });
+      setValues({
+        name: "",
+        email: "",
+        status: "Active",
+        company: "",
+        phone: "",
+        lastActivity: new Date(),
+      });
     }
   }, [initialValues, open]);
 
