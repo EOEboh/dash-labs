@@ -2,7 +2,7 @@
   {
     "name": "CRM Dashboard",
     "slug": "crm",
-    "description": "Manage customer relationships and sales pipelines easily.",
+    "description": "A Turborepo-ready CRM dashboard template built with Next.js 15 App Router, Tailwind CSS, shadcn/ui, and Lucide icons. Includes Overview, Contacts, Deals (Kanban), and Settings pages with local CRUD and toasts.",
     "category": "CRM",
     "downloadLink": "https://github.com/EOEboh/dash-labs/releases/download/v1.1.2/crm.zip",
     "previewLink": "https://template-crm-nextjs.vercel.app",
