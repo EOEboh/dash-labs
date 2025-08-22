@@ -27,8 +27,9 @@ const metadata = templateNames.map((slug) => {
   let config = {
     name: slug,
     slug,
-    description: "No description provided.",
-    category: "Uncategorized",
+    description:
+      "A CRM dashboard template built with Next.js 15 App Router, Tailwind CSS, shadcn/ui, and Lucide icons. Includes Overview, Contacts, Deals (Kanban), and Settings pages with local CRUD and toasts..",
+    category: "CRM",
     prodLink: `https://${slug}.vercel.app`,
   };
 
