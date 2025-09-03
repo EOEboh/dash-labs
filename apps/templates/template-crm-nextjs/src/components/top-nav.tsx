@@ -1,22 +1,21 @@
 "use client";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Search, Sun, Moon } from "lucide-react";
+import { Search, Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
 interface TopNavProps {
   className?: string;
-  userName?: string; // Optional prop for user name
+  userName?: string;
 }
 
 export function TopNav({ className, userName }: TopNavProps) {
   const { theme, setTheme } = useTheme();
-  const isDark = theme === "dark";
+
   const [greeting, setGreeting] = useState("Good Morning");
 
-  // Function to get time-based greeting
   const getTimeBasedGreeting = () => {
     const now = new Date();
     const hour = now.getHours();
@@ -30,20 +29,53 @@ export function TopNav({ className, userName }: TopNavProps) {
     }
   };
 
-  // Update greeting on component mount and every minute
   useEffect(() => {
     const updateGreeting = () => {
       setGreeting(getTimeBasedGreeting());
     };
 
-    // Set initial greeting
     updateGreeting();
 
-    // Update greeting every minute
     const interval = setInterval(updateGreeting, 60000);
 
     return () => clearInterval(interval);
   }, []);
+
+  const cycleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("system");
+    } else {
+      setTheme("light");
+    }
+  };
+
+  const getThemeIcon = () => {
+    switch (theme) {
+      case "light":
+        return <Sun className="h-4 w-4" />;
+      case "dark":
+        return <Moon className="h-4 w-4" />;
+      case "system":
+        return <Monitor className="h-4 w-4" />;
+      default:
+        return <Monitor className="h-4 w-4" />;
+    }
+  };
+
+  const getThemeLabel = () => {
+    switch (theme) {
+      case "light":
+        return "Switch to dark mode";
+      case "dark":
+        return "Switch to system mode";
+      case "system":
+        return "Switch to light mode";
+      default:
+        return "Toggle theme";
+    }
+  };
 
   return (
     <div className={cn("flex w-full items-center gap-2", className)}>
@@ -66,10 +98,17 @@ export function TopNav({ className, userName }: TopNavProps) {
       <Button
         variant="ghost"
         size="icon"
-        aria-label="Toggle theme"
-        onClick={() => setTheme(isDark ? "light" : "dark")}
+        aria-label={getThemeLabel()}
+        onClick={cycleTheme}
+        className="relative"
       >
-        {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
+        {getThemeIcon()}
+        {theme === "system" && (
+          <div
+            className="absolute -bottom-0.5 -right-0.5 h-2 w-2 rounded-full bg-primary"
+            aria-hidden="true"
+          />
+        )}
       </Button>
     </div>
   );
