@@ -24,7 +24,7 @@ const statusColors = {
   default: "bg-gray-100 text-gray-800 dark:bg-gray-900 dark:text-gray-300",
 };
 
-export function SalesTable({
+export function DealsTable({
   data,
   onRowSelect,
   onEdit,

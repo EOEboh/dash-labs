@@ -1,7 +1,7 @@
 // apps/crm-dashboard/app/api/score/route.ts
 import { NextResponse } from "next/server";
-import { scoreLead } from "@/lib/ai/scoring";
-import type { Lead } from "@/lib/ai/types/leads";
+import { scoreLead } from "@/lib/leads/scoring";
+import type { Lead } from "@/lib/types/leads";
 
 export async function POST(request: Request) {
   try {

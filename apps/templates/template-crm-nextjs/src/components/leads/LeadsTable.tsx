@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useState, useMemo } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -10,7 +10,9 @@ import {
   createColumnHelper,
   type SortingState,
 } from "@tanstack/react-table";
-import type { Lead, LeadStatus } from "@/lib/ai/types/leads";
+import type { Lead, LeadStatus } from "@/lib/types/leads";
+import type { Deal } from "@/lib/types/deals";
+import { convertLeadToDeal } from "@/lib/mockConversion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -22,8 +24,21 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronUp, ChevronDown, Loader2, Upload } from "lucide-react";
-import leadsData from "@/data/leads.json";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import {
+  ChevronUp,
+  ChevronDown,
+  Loader2,
+  Upload,
+  ArrowRight,
+} from "lucide-react";
+import initialLeads from "@/data/leads.json";
 
 const columnHelper = createColumnHelper<Lead>();
 
@@ -93,23 +108,101 @@ function ScoreButton({ lead }: ScoreButtonProps) {
   );
 }
 
+interface ConvertToDealButtonProps {
+  lead: Lead;
+  onConvert: (leadId: string, deal: Deal) => void;
+}
+
+function ConvertToDealButton({ lead, onConvert }: ConvertToDealButtonProps) {
+  const [isOpen, setIsOpen] = useState(false);
+  const [convertedDeal, setConvertedDeal] = useState<Deal | null>(null);
+
+  const handleConvert = () => {
+    const newDeal = convertLeadToDeal(lead);
+    setConvertedDeal(newDeal);
+    onConvert(lead.id, newDeal);
+  };
+
+  return (
+    <>
+      <Button
+        variant="outline"
+        size="sm"
+        onClick={() => setIsOpen(true)}
+        className="h-8 bg-transparent gap-1"
+      >
+        <ArrowRight className="h-3 w-3" />
+        Convert
+      </Button>
+
+      <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <DialogTitle>Convert to Deal</DialogTitle>
+          </DialogHeader>
+
+          <div className="space-y-4 py-4">
+            {!convertedDeal ? (
+              <>
+                <p className="text-sm">Convert this lead into a new deal?</p>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Name
+                  </p>
+                  <p className="text-sm font-semibold">{lead.name}</p>
+                </div>
+                <div>
+                  <p className="text-sm font-medium text-muted-foreground">
+                    Company
+                  </p>
+                  <p className="text-sm font-semibold">{lead.company}</p>
+                </div>
+              </>
+            ) : (
+              <div className="bg-muted/50 p-4 rounded-lg">
+                <p className="text-sm text-center font-semibold">
+                  Deal created successfully! 🎉
+                </p>
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  {convertedDeal.name} @ {convertedDeal.company}, Stage:{" "}
+                  {convertedDeal.stage}, Value: ${convertedDeal.value}
+                </p>
+              </div>
+            )}
+          </div>
+
+          <DialogFooter>
+            {!convertedDeal ? (
+              <>
+                <Button variant="outline" onClick={() => setIsOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={handleConvert}>Convert</Button>
+              </>
+            ) : (
+              <Button onClick={() => setIsOpen(false)}>Close</Button>
+            )}
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+    </>
+  );
+}
+
 export function LeadsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
+  const [leads, setLeads] = useState<Lead[]>(initialLeads as Lead[]);
+  const [deals, setDeals] = useState<Deal[]>([]);
 
-  // ✅ use state so we can update leads in memory
-  const [data, setData] = useState<Lead[]>(() => leadsData as Lead[]);
-
-  const handleConvert = (lead: Lead) => {
-    setData((prev) =>
-      prev.map((l) =>
-        l.id === lead.id ? { ...l, status: "converted", converted: true } : l
-      )
+  const handleConvert = (leadId: string, newDeal: Deal) => {
+    setLeads((prev) =>
+      prev.map((l) => (l.id === leadId ? { ...l, status: "converted" } : l))
     );
-    console.log(`Converted lead ${lead.name} into a Deal (mock only)`);
+    setDeals((prev) => [...prev, newDeal]);
   };
 
   const columns = useMemo(
@@ -138,30 +231,22 @@ export function LeadsTable() {
         header: "Score",
         cell: (info) => <ScoreButton lead={info.row.original} />,
       }),
-      // ✅ new Actions column
       columnHelper.display({
         id: "actions",
         header: "Actions",
-        cell: (info) => {
-          const lead = info.row.original;
-          return (
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handleConvert(lead)}
-              disabled={lead.converted}
-            >
-              {lead.converted ? "Converted" : "Convert"}
-            </Button>
-          );
-        },
+        cell: (info) => (
+          <ConvertToDealButton
+            lead={info.row.original}
+            onConvert={handleConvert}
+          />
+        ),
       }),
     ],
-    [data]
+    []
   );
 
   const table = useReactTable({
-    data: data.filter((l) => !l.converted), // hide converted leads
+    data: leads,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),

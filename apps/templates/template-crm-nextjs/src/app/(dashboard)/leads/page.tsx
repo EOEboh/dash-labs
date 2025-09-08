@@ -1,4 +1,4 @@
-import { LeadsTable } from "@/components/ai/LeadsTable";
+import { LeadsTable } from "@/components/leads/LeadsTable";
 
 export default function LeadsPage() {
   return (

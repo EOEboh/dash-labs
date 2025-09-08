@@ -1,9 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { SalesTable } from "@/components/sales-table/sales-table";
+import { DealsTable } from "@/components/deals-table/deals-table";
 import { useTableSales } from "@/hooks/use-table-sales";
-import type { Deal } from "@/components/sales-table/types";
+import type { Deal } from "@/components/deals-table/types";
 import {
   Card,
   CardContent,
@@ -99,7 +99,7 @@ export default function MainTable() {
         <CardContent className="p-0">
           <div className="overflow-x-auto w-full">
             <div className="min-w-[800px] px-4">
-              <SalesTable
+              <DealsTable
                 data={data ?? []}
                 onRowSelect={handleRowSelect}
                 onView={handleView}

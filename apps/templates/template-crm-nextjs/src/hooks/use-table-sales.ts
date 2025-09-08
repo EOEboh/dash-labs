@@ -1,7 +1,7 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { Deal } from "@/components/sales-table/types";
+import { Deal } from "@/components/deals-table/types";
 
 export function useTableSales() {
   return useQuery<Deal[]>({

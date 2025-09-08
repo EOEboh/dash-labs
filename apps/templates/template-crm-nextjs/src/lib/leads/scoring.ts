@@ -1,5 +1,5 @@
 // apps/crm-dashboard/lib/scoring.ts
-import type { Lead } from "@/lib/ai/types/leads";
+import type { Lead } from "@/lib/types/leads";
 
 export type ScoreResult = {
   score: number; // 0..100 normalized
