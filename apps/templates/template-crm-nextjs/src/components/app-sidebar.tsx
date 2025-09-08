@@ -29,14 +29,16 @@ import {
   FaFileExport,
   FaChevronDown,
 } from "react-icons/fa";
+import { AiFillFileAdd } from "react-icons/ai";
 import { MdViewKanban, MdBarChart } from "react-icons/md";
 import { IoSettings } from "react-icons/io5";
 import { FaArrowTrendUp } from "react-icons/fa6";
 
 const nav = [
   { title: "Overview", href: "/overview", icon: FaHome },
-  { title: "Contacts", href: "/contacts", icon: FaUsers },
+  { title: "Leads", href: "/leads", icon: AiFillFileAdd },
   { title: "Deals", href: "/deals", icon: MdViewKanban },
+  { title: "Contacts", href: "/contacts", icon: FaUsers },
   { title: "Settings", href: "/settings", icon: IoSettings },
 ];
 

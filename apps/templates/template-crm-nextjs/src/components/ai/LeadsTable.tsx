@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useState, useMemo, useRef } from "react";
 import {
   useReactTable,
   getCoreRowModel,
@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { ChevronUp, ChevronDown, Loader2 } from "lucide-react";
+import { ChevronUp, ChevronDown, Loader2, Upload } from "lucide-react";
 import leadsData from "@/data/leads.json";
 
 const columnHelper = createColumnHelper<Lead>();
@@ -100,7 +100,17 @@ export function LeadsTable() {
     pageSize: 10,
   });
 
-  const data = useMemo(() => leadsData as Lead[], []);
+  // ✅ use state so we can update leads in memory
+  const [data, setData] = useState<Lead[]>(() => leadsData as Lead[]);
+
+  const handleConvert = (lead: Lead) => {
+    setData((prev) =>
+      prev.map((l) =>
+        l.id === lead.id ? { ...l, status: "converted", converted: true } : l
+      )
+    );
+    console.log(`Converted lead ${lead.name} into a Deal (mock only)`);
+  };
 
   const columns = useMemo(
     () => [
@@ -128,12 +138,30 @@ export function LeadsTable() {
         header: "Score",
         cell: (info) => <ScoreButton lead={info.row.original} />,
       }),
+      // ✅ new Actions column
+      columnHelper.display({
+        id: "actions",
+        header: "Actions",
+        cell: (info) => {
+          const lead = info.row.original;
+          return (
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => handleConvert(lead)}
+              disabled={lead.converted}
+            >
+              {lead.converted ? "Converted" : "Convert"}
+            </Button>
+          );
+        },
+      }),
     ],
-    []
+    [data]
   );
 
   const table = useReactTable({
-    data,
+    data: data.filter((l) => !l.converted), // hide converted leads
     columns,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
@@ -149,7 +177,13 @@ export function LeadsTable() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Leads</CardTitle>
+        <div className="flex items-center justify-between">
+          <CardTitle>Leads</CardTitle>
+          <Button variant="outline" size="sm" className="gap-2 bg-transparent">
+            <Upload className="h-4 w-4" />
+            Import CSV
+          </Button>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="rounded-md border">

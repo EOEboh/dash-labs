@@ -68,7 +68,7 @@ export default function MainTable() {
           <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
             <div>
               <CardTitle>
-                <h2 className="text-lg font-semibold mb-4">Sales Data</h2>
+                <h2 className="text-lg font-semibold mb-4">All Deals</h2>
               </CardTitle>
             </div>
             <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
