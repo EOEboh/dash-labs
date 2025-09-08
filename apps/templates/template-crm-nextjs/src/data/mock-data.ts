@@ -1,4 +1,4 @@
-import { Deal } from "./types";
+import { Deal } from "../components/sales-table/types";
 
 export const mockSales: Deal[] = [
   {

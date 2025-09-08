@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { mockSales } from "@/components/sales-table/mock-data";
+import { mockSales } from "@/data/mock-data";
 
 export async function GET() {
   // Simulate network latency
