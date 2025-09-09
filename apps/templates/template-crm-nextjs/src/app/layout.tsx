@@ -7,6 +7,9 @@ import { AppSidebar } from "@/components/app-sidebar";
 import { ThemeProvider } from "@/components/theme-provider";
 import { TopNav } from "@/components/top-nav";
 import QueryProvider from "@/components/query-provider";
+import { Inter } from "next/font/google";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "CRM Dashboard",
@@ -20,22 +23,25 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className={inter.className}>
       <body className="min-h-svh bg-background antialiased">
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <QueryProvider>
             <SidebarProvider>
-              <AppSidebar />
-              <div className="flex min-h-svh w-full flex-col">
-                <header className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
-                  <div className="container mx-auto flex items-center gap-2 px-4 py-3">
-                    <SidebarTrigger />
-                    <TopNav userName="John" />
-                  </div>
-                </header>
-                <main className="container mx-auto flex-1 px-4 py-6">
-                  {children}
-                </main>
+              {/* Flex wrapper for sidebar + content */}
+              <div className="flex min-h-svh w-full overflow-hidden">
+                <AppSidebar />
+                <div className="flex flex-1 flex-col overflow-x-hidden">
+                  <header className="sticky top-0 z-20 bg-background/80 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+                    <div className="container mx-auto flex items-center gap-2 px-4 py-3">
+                      <SidebarTrigger />
+                      <TopNav userName="John" />
+                    </div>
+                  </header>
+                  <main className="container mx-auto flex-1 px-4 py-6">
+                    {children}
+                  </main>
+                </div>
               </div>
             </SidebarProvider>
             {/* <Toaster /> */}

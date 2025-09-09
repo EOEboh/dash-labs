@@ -70,13 +70,18 @@ export function AppSidebar() {
             <SidebarMenu>
               {nav.map((item) => (
                 <SidebarMenuItem key={item.href}>
-                  <SidebarMenuButton asChild isActive={pathname === item.href}>
+                  <SidebarMenuButton
+                    asChild
+                    isActive={pathname === item.href}
+                    className="[&>svg]:!size-5" // custom class to size icons
+                  >
                     <a
                       href={item.href}
                       aria-current={pathname === item.href ? "page" : undefined}
                     >
                       <item.icon />
-                      <span>{item.title}</span>
+
+                      <span className="text-sm">{item.title}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
