@@ -1,17 +1,20 @@
 export type DealStage =
-  | "Prospecting"
-  | "Qualified"
-  | "Proposal"
-  | "Negotiation"
-  | "Closed Won"
-  | "Closed Lost";
+  | "prospect"
+  | "negotiation"
+  | "proposal"
+  | "closed-won"
+  | "closed-lost";
 
 export type Deal = {
   id: string;
-  name: string;
+  dealName: string;
   company: string;
+  email: string;
   owner: string;
-  value: number;
-  probability: number;
   stage: DealStage;
+  value: number;
+  closeDate: string;
+  lastActivity?: string;
+  avatar?: string;
+  alt?: string;
 };

@@ -11,7 +11,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import type { Deal } from "@/lib/types";
+import type { Deal } from "@/lib/types/deals";
 import { DEAL_STAGES } from "@/lib/constants";
 import {
   Select,
@@ -37,11 +37,12 @@ export function DealForm({
   onSubmit: (values: Values) => void;
 }) {
   const [values, setValues] = useState<Values>({
-    name: "",
+    dealName: "",
     company: "",
+    email: "",
     owner: "",
     value: 0,
-    probability: 10,
+    closeDate: new Date().toISOString(),
     stage: DEAL_STAGES[0],
   });
 
@@ -51,11 +52,12 @@ export function DealForm({
       setValues(rest);
     } else {
       setValues({
-        name: "",
+        dealName: "",
         company: "",
+        email: "",
         owner: "",
         value: 0,
-        probability: 10,
+        closeDate: new Date().toISOString(),
         stage: DEAL_STAGES[0],
       });
     }
@@ -83,9 +85,9 @@ export function DealForm({
             <Label htmlFor="name">Deal name</Label>
             <Input
               id="name"
-              value={values.name}
+              value={values.dealName}
               onChange={(e) =>
-                setValues((s) => ({ ...s, name: e.target.value }))
+                setValues((s) => ({ ...s, dealName: e.target.value }))
               }
               required
               placeholder="Enterprise plan"
@@ -100,6 +102,17 @@ export function DealForm({
                 setValues((s) => ({ ...s, company: e.target.value }))
               }
               placeholder="Acme Inc."
+            />
+          </div>
+          <div className="grid gap-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              value={values.email}
+              onChange={(e) =>
+                setValues((s) => ({ ...s, email: e.target.value }))
+              }
+              placeholder="john.doe@core.com"
             />
           </div>
           <div className="grid gap-2">
@@ -126,24 +139,21 @@ export function DealForm({
             />
           </div>
           <div className="grid gap-2">
-            <Label htmlFor="probability">Probability (%)</Label>
+            <Label htmlFor="closeDate">Close Date</Label>
             <Input
-              id="probability"
-              type="number"
-              min={0}
-              max={100}
-              value={values.probability}
-              onChange={(e) =>
+              id="closeDate"
+              type="date"
+              value={values.closeDate ? values.closeDate.split("T")[0] : ""}
+              onChange={(e) => {
+                const dateValue = e.target.value;
                 setValues((s) => ({
                   ...s,
-                  probability: Math.min(
-                    100,
-                    Math.max(0, Number(e.target.value))
-                  ),
-                }))
-              }
+                  closeDate: dateValue ? new Date(dateValue).toISOString() : "",
+                }));
+              }}
             />
           </div>
+
           <div className="grid gap-2">
             <Label>Stage</Label>
             <Select

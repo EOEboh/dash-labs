@@ -1,19 +1,5 @@
 import type React from "react";
 
-export type Deal = {
-  id: string;
-  dealName: string;
-  company: string;
-  email: string;
-  owner: string;
-  stage: "prospect" | "negotiation" | "proposal" | "closed-won" | "closed-lost";
-  amount: number;
-  closeDate: Date;
-  lastActivity: Date;
-  avatar?: string;
-  alt?: string;
-};
-
 export interface DataTableColumn<T> {
   id: string;
   header?: string;

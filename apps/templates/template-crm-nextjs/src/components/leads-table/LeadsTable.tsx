@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useQuery } from "@tanstack/react-query";
 import {
   useReactTable,
   getCoreRowModel,
@@ -11,8 +12,6 @@ import {
   type SortingState,
 } from "@tanstack/react-table";
 import type { Lead, LeadStatus } from "@/lib/types/leads";
-import type { Deal } from "@/lib/types/deals";
-import { convertLeadToDeal } from "@/lib/mockConversion";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -24,21 +23,9 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogFooter,
-} from "@/components/ui/dialog";
-import {
-  ChevronUp,
-  ChevronDown,
-  Loader2,
-  Upload,
-  ArrowRight,
-} from "lucide-react";
-import initialLeads from "@/data/leads.json";
+import { ChevronUp, ChevronDown, Upload } from "lucide-react";
+import { ConvertToDealButton } from "./ConvertToDealButton";
+import { useTableLeads } from "@/hooks/use-table-leads";
 
 const columnHelper = createColumnHelper<Lead>();
 
@@ -53,157 +40,14 @@ const statusColors: Record<LeadStatus, string> = {
   lost: "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300",
 };
 
-const getScoreColor = (score: number) => {
-  if (score >= 71)
-    return "bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-300";
-  if (score >= 31)
-    return "bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300";
-  return "bg-red-100 text-red-800 dark:bg-red-900 dark:text-red-300";
-};
-
-interface ScoreButtonProps {
-  lead: Lead;
-}
-
-function ScoreButton({ lead }: ScoreButtonProps) {
-  const [score, setScore] = useState<number | null>(null);
-  const [loading, setLoading] = useState(false);
-
-  const handleScore = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch("/api/score", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(lead),
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setScore(data.score);
-      }
-    } catch (error) {
-      console.error("Error scoring lead:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  if (score !== null) {
-    return <Badge className={getScoreColor(score)}>{score}</Badge>;
-  }
-
-  return (
-    <Button
-      variant="outline"
-      size="sm"
-      onClick={handleScore}
-      disabled={loading}
-      className="h-8 bg-transparent"
-    >
-      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Score"}
-    </Button>
-  );
-}
-
-interface ConvertToDealButtonProps {
-  lead: Lead;
-  onConvert: (leadId: string, deal: Deal) => void;
-}
-
-function ConvertToDealButton({ lead, onConvert }: ConvertToDealButtonProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [convertedDeal, setConvertedDeal] = useState<Deal | null>(null);
-
-  const handleConvert = () => {
-    const newDeal = convertLeadToDeal(lead);
-    setConvertedDeal(newDeal);
-    onConvert(lead.id, newDeal);
-  };
-
-  return (
-    <>
-      <Button
-        variant="outline"
-        size="sm"
-        onClick={() => setIsOpen(true)}
-        className="h-8 bg-transparent gap-1"
-      >
-        <ArrowRight className="h-3 w-3" />
-        Convert
-      </Button>
-
-      <Dialog open={isOpen} onOpenChange={setIsOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Convert to Deal</DialogTitle>
-          </DialogHeader>
-
-          <div className="space-y-4 py-4">
-            {!convertedDeal ? (
-              <>
-                <p className="text-sm">Convert this lead into a new deal?</p>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Name
-                  </p>
-                  <p className="text-sm font-semibold">{lead.name}</p>
-                </div>
-                <div>
-                  <p className="text-sm font-medium text-muted-foreground">
-                    Company
-                  </p>
-                  <p className="text-sm font-semibold">{lead.company}</p>
-                </div>
-              </>
-            ) : (
-              <div className="bg-muted/50 p-4 rounded-lg">
-                <p className="text-sm text-center font-semibold">
-                  Deal created successfully! 🎉
-                </p>
-                <p className="text-xs text-muted-foreground text-center mt-2">
-                  {convertedDeal.name} @ {convertedDeal.company}, Stage:{" "}
-                  {convertedDeal.stage}, Value: ${convertedDeal.value}
-                </p>
-              </div>
-            )}
-          </div>
-
-          <DialogFooter>
-            {!convertedDeal ? (
-              <>
-                <Button variant="outline" onClick={() => setIsOpen(false)}>
-                  Cancel
-                </Button>
-                <Button onClick={handleConvert}>Convert</Button>
-              </>
-            ) : (
-              <Button onClick={() => setIsOpen(false)}>Close</Button>
-            )}
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-    </>
-  );
-}
-
 export function LeadsTable() {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   });
-  const [leads, setLeads] = useState<Lead[]>(initialLeads as Lead[]);
-  const [deals, setDeals] = useState<Deal[]>([]);
 
-  const handleConvert = (leadId: string, newDeal: Deal) => {
-    setLeads((prev) =>
-      prev.map((l) => (l.id === leadId ? { ...l, status: "converted" } : l))
-    );
-    setDeals((prev) => [...prev, newDeal]);
-  };
+  const { data: leads = [], isLoading, error } = useTableLeads();
 
   const columns = useMemo(
     () => [
@@ -227,19 +71,9 @@ export function LeadsTable() {
         enableSorting: false,
       }),
       columnHelper.display({
-        id: "score",
-        header: "Score",
-        cell: (info) => <ScoreButton lead={info.row.original} />,
-      }),
-      columnHelper.display({
         id: "actions",
         header: "Actions",
-        cell: (info) => (
-          <ConvertToDealButton
-            lead={info.row.original}
-            onConvert={handleConvert}
-          />
-        ),
+        cell: (info) => <ConvertToDealButton lead={info.row.original} />,
       }),
     ],
     []
@@ -258,6 +92,36 @@ export function LeadsTable() {
       pagination,
     },
   });
+
+  if (isLoading) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Leads</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-6 text-center text-muted-foreground">
+            Loading...
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card>
+        <CardHeader>
+          <CardTitle>Leads</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="p-6 text-center text-red-500">
+            Failed to load leads.
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card>

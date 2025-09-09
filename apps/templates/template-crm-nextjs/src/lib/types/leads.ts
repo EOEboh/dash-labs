@@ -5,7 +5,7 @@ export type LeadStatus =
   | "converted"
   | "lost";
 
-export interface Lead {
+export type Lead = {
   id: string;
   name: string;
   company: string;
@@ -14,8 +14,8 @@ export interface Lead {
   job_title: string;
   email_opens: number;
   email_replies: number;
-  last_contacted: string; // ISO date string
+  last_contacted: string;
   website_visits: number;
   status: LeadStatus;
   converted: boolean;
-}
+};

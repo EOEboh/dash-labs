@@ -2,21 +2,15 @@
 
 import * as React from "react";
 import { DealsTable } from "@/components/deals-table/deals-table";
-import { useTableSales } from "@/hooks/use-table-sales";
-import type { Deal } from "@/components/deals-table/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { useTableDeals } from "@/hooks/use-table-deals";
+import type { Deal } from "@/lib/types/deals";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 // import { useToast } from "@/hooks/use-toast"
 
 export default function MainTable() {
   //   const { toast } = useToast()
-  const { data, isLoading, error } = useTableSales();
+  const { data, isLoading, error } = useTableDeals();
   const [selectedDeals, setSelectedDeals] = React.useState<Deal[]>([]);
 
   const handleRowSelect = (contacts: Deal[]) => {

@@ -2,10 +2,11 @@
 import { Badge } from "@/components/ui/badge";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DataTable } from "./data-table";
-import type { Deal, DataTableColumn } from "./types";
+import type { DataTableColumn } from "./types";
+import { Deal } from "@/lib/types/deals";
 import { formatDistanceToNow } from "date-fns/formatDistanceToNow";
 
-interface SalesTableProps {
+interface DealsTableProps {
   data: Deal[];
   onRowSelect?: (selectedDeals: Deal[]) => void;
   onEdit?: (deal: Deal) => void;
@@ -30,7 +31,7 @@ export function DealsTable({
   onEdit,
   onView,
   onDelete,
-}: SalesTableProps) {
+}: DealsTableProps) {
   const columns: DataTableColumn<Deal>[] = [
     {
       id: "avatar",
@@ -79,13 +80,13 @@ export function DealsTable({
       size: 120,
     },
     {
-      id: "amount",
-      header: "Amount",
-      accessorKey: "amount",
+      id: "value",
+      header: "Value (USD)",
+      accessorKey: "value",
       cell: (deal) => (
         <div className="text-sm">
           $
-          {deal.amount.toLocaleString("en-US", {
+          {deal.value.toLocaleString("en-US", {
             minimumFractionDigits: 2,
             maximumFractionDigits: 2,
           })}

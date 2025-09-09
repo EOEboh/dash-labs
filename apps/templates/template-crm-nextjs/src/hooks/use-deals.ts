@@ -1,33 +1,74 @@
 "use client";
 
-import { useLocalStorage } from "./use-local-storage";
-import type { Deal, DealStage } from "@/lib/types";
-import { initialDeals } from "@/lib/mock-data";
-
-const KEY = "crm:deals";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import type { Deal, DealStage } from "@/lib/types/deals";
 
 export function useDeals() {
-  const { value, setValue } = useLocalStorage<Deal[]>(KEY, initialDeals);
+  const queryClient = useQueryClient();
 
-  function addDeal(d: Omit<Deal, "id">) {
-    const id = crypto.randomUUID();
-    setValue([{ id, ...d }, ...value]);
-  }
+  const query = useQuery<Deal[]>({
+    queryKey: ["deals"],
+    queryFn: async () => {
+      const res = await fetch("/api/deals");
+      if (!res.ok) throw new Error("Failed to fetch deals");
+      return res.json();
+    },
+    staleTime: 5_000,
+  });
 
-  function updateDeal(id: string, patch: Omit<Deal, "id">) {
-    setValue(value.map((c) => (c.id === id ? { id, ...patch } : c)));
-  }
+  const addMutation = useMutation({
+    mutationFn: async (payload: Omit<Deal, "id">) => {
+      const res = await fetch("/api/deals", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      if (!res.ok) throw new Error("Failed to create deal");
+      return res.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["deals"] }),
+  });
 
-  function deleteDeal(id: string) {
-    setValue(value.filter((c) => c.id !== id));
-  }
+  const updateMutation = useMutation({
+    mutationFn: async ({
+      id,
+      updates,
+    }: {
+      id: string;
+      updates: Partial<Deal>;
+    }) => {
+      const res = await fetch(`/api/deals/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(updates),
+      });
+      if (!res.ok) throw new Error("Failed to update deal");
+      return res.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["deals"] }),
+  });
 
-  function moveDeal(id: string, stage: DealStage) {
-    setValue(value.map((c) => (c.id === id ? ({ ...c, stage } as Deal) : c)));
-  }
+  const deleteMutation = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await fetch(`/api/deals/${id}`, { method: "DELETE" });
+      if (!res.ok) throw new Error("Failed to delete deal");
+      return res.json();
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ["deals"] }),
+  });
+
+  // helpers using the mutations (they return Promise so page can await)
+  const addDeal = (payload: Omit<Deal, "id">) =>
+    addMutation.mutateAsync(payload);
+  const updateDeal = (id: string, updates: Partial<Deal>) =>
+    updateMutation.mutateAsync({ id, updates });
+  const deleteDeal = (id: string) => deleteMutation.mutateAsync(id);
+  const moveDeal = (id: string, stage: DealStage) => updateDeal(id, { stage });
 
   return {
-    deals: value,
+    deals: query.data ?? [],
+    isLoading: query.isLoading,
+    error: query.error,
     addDeal,
     updateDeal,
     deleteDeal,
