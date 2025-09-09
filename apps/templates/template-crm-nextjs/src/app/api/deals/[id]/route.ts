@@ -23,12 +23,17 @@ export async function DELETE(
   _req: Request,
   { params }: { params: { id: string } }
 ) {
-  const { id } = params;
+  const { id } = await params;
   const before = deals.length;
   deals = deals.filter((d) => d.id !== id);
   if (deals.length === before) {
     return NextResponse.json({ error: "Not found" }, { status: 404 });
   }
+  console.log("DELETE called with id:", id);
+  console.log(
+    "Current deals:",
+    deals.map((d) => d.id)
+  );
 
   return NextResponse.json({ success: true }, { status: 200 });
 }

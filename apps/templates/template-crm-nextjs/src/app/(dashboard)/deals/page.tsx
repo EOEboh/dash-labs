@@ -40,6 +40,7 @@ export default function DealsPage() {
   function onDelete() {
     if (!confirm.id) return;
     deleteDeal(confirm.id);
+
     setConfirm({ open: false });
   }
 
@@ -134,7 +135,9 @@ export default function DealsPage() {
                         size="sm"
                         variant="ghost"
                         className="text-destructive hover:text-destructive"
-                        onClick={() => setConfirm({ open: true, id: deal.id })}
+                        onClick={() =>
+                          setConfirm({ open: true, id: String(deal.id) })
+                        }
                         aria-label={`Delete ${deal.dealName}`}
                       >
                         Delete
