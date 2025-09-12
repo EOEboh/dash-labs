@@ -1,7 +1,7 @@
 "use client";
 
 import { useLocalStorage } from "./use-local-storage";
-import type { Contact } from "@/lib/types";
+import type { Contact } from "@/lib/types/contacts";
 import { initialContacts } from "@/lib/mock-data";
 
 const KEY = "crm:contacts";

@@ -41,7 +41,7 @@ export function ConvertToDealButton({ lead }: ConvertToDealButtonProps) {
         email: `${lead.name.toLowerCase().replace(" ", ".")}@example.com`,
         owner: "Unassigned",
         stage: "prospect",
-        amount: Math.floor(Math.random() * 20000) + 5000,
+        value: Math.floor(Math.random() * 20000) + 5000,
         closeDate: new Date().toISOString(),
         lastActivity: new Date(lead.last_contacted).toISOString(),
         avatar: undefined,

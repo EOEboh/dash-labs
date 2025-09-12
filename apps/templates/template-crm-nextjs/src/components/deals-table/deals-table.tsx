@@ -125,7 +125,9 @@ export function DealsTable({
       accessorKey: "lastActivity",
       cell: (deal) => (
         <div className="text-sm">
-          {formatDistanceToNow(deal.lastActivity, { addSuffix: true })}
+          {formatDistanceToNow(deal.lastActivity ?? new Date(), {
+            addSuffix: true,
+          })}
         </div>
       ),
       size: 150,

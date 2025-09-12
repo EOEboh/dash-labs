@@ -4,11 +4,14 @@ import { mockDeals } from "@/data/mock-deals";
 
 let deals: Deal[] = [...mockDeals];
 
-export async function PATCH(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
-  const { id } = params;
+type Props = {
+  params: Promise<{
+    id: string;
+  }>;
+};
+
+export async function PATCH(req: Request, { params }: Props) {
+  const { id } = await params;
   const updates = await req.json();
 
   const i = deals.findIndex((d) => d.id === id);
@@ -19,10 +22,7 @@ export async function PATCH(
   return NextResponse.json(deals[i]);
 }
 
-export async function DELETE(
-  _req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function DELETE(_req: Request, { params }: Props) {
   const { id } = await params;
   const before = deals.length;
   deals = deals.filter((d) => d.id !== id);

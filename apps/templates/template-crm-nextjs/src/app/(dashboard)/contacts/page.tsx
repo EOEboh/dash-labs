@@ -25,7 +25,7 @@ import { useContacts } from "@/hooks/use-contacts";
 import { ContactForm } from "@/components/contact-form";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 // import { useToast } from "@/hooks/use-toast";
-import type { Contact } from "@/lib/types";
+import type { Contact } from "@/lib/types/contacts";
 
 export default function ContactsPage() {
   // const { toast } = useToast();
@@ -167,7 +167,7 @@ export default function ContactsPage() {
                         <AvatarFallback aria-hidden>
                           {c.name
                             .split(" ")
-                            .map((n) => n[0])
+                            .map((n: string) => n[0])
                             .slice(0, 2)
                             .join("")}
                         </AvatarFallback>
@@ -241,7 +241,7 @@ export default function ContactsPage() {
         onOpenChange={setFormOpen}
         mode={editing ? "edit" : "create"}
         initialValues={editing ?? undefined}
-        onSubmit={(vals) => {
+        onSubmit={(vals: Omit<Contact, "id">) => {
           if (editing) {
             onEdit(vals);
           } else {

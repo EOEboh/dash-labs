@@ -29,7 +29,7 @@ export async function POST(req: Request) {
     email: `${lead.name.split(" ").join(".").toLowerCase()}@${lead.company.toLowerCase()}.com`,
     owner: "Unassigned",
     stage: "prospect",
-    amount: Math.floor(Math.random() * 10000) + 1000,
+    value: Math.floor(Math.random() * 10000) + 1000,
     closeDate: new Date().toISOString(),
     lastActivity: new Date().toISOString(),
   };
