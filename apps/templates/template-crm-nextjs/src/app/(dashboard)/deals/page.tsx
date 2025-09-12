@@ -5,19 +5,18 @@ import { Plus } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { useDeals } from "@/hooks/use-deals";
 import { ConfirmDialog } from "@/components/confirm-dialog";
 import { DealForm } from "@/components/deal-form";
-import type { Deal, DealStage } from "@/lib/types";
+import { useDeals } from "@/hooks/use-deals";
+import type { Deal } from "@/lib/types/deals";
 import { DEAL_STAGES } from "@/lib/constants";
 import { Badge } from "@/components/ui/badge";
-// import { useToast } from "@/hooks/use-toast";
 
-type DragInfo = { id: string; from: DealStage } | null;
+type DragInfo = { id: string; from: Deal["stage"] } | null;
 
 export default function DealsPage() {
-  // const { toast } = useToast();
-  const { deals, addDeal, updateDeal, deleteDeal, moveDeal } = useDeals();
+  const { deals, addDeal, updateDeal, deleteDeal, moveDeal, isLoading } =
+    useDeals();
   const [formOpen, setFormOpen] = useState(false);
   const [editing, setEditing] = useState<Deal | null>(null);
   const [confirm, setConfirm] = useState<{ open: boolean; id?: string }>({
@@ -25,37 +24,32 @@ export default function DealsPage() {
   });
   const [drag, setDrag] = useState<DragInfo>(null);
 
+  if (isLoading) {
+    return <div className="p-8 text-center">Loading deals…</div>;
+  }
+
   function onCreate(values: Omit<Deal, "id">) {
     addDeal(values);
-    // toast({
-    //   title: "Deal added",
-    //   description: `${values.name} created in ${values.stage}.`,
-    // });
   }
 
   function onEdit(values: Omit<Deal, "id">) {
     if (!editing) return;
     updateDeal(editing.id, values);
-    // toast({ title: "Deal updated", description: `${values.name} updated.` });
   }
 
   function onDelete() {
     if (!confirm.id) return;
-    const d = deals.find((x) => x.id === confirm.id);
     deleteDeal(confirm.id);
+
     setConfirm({ open: false });
-    // toast({
-    //   title: "Deal deleted",
-    //   description: `${d?.name ?? "Deal"} removed.`,
-    // });
   }
 
-  const grouped: Record<DealStage, Deal[]> = DEAL_STAGES.reduce(
+  const grouped: Record<Deal["stage"], Deal[]> = DEAL_STAGES.reduce(
     (acc, s) => {
       acc[s] = deals.filter((d) => d.stage === s);
       return acc;
     },
-    {} as Record<DealStage, Deal[]>
+    {} as Record<Deal["stage"], Deal[]>
   );
 
   return (
@@ -84,10 +78,6 @@ export default function DealsPage() {
               if (drag && drag.from !== stage) {
                 moveDeal(drag.id, stage);
                 setDrag(null);
-                // toast({
-                //   title: "Deal moved",
-                //   description: `Moved to ${stage}.`,
-                // });
               }
             }}
             aria-label={`${stage} column`}
@@ -96,6 +86,7 @@ export default function DealsPage() {
               <div className="font-medium">{stage}</div>
               <Badge variant="secondary">{grouped[stage]?.length ?? 0}</Badge>
             </div>
+
             <ScrollArea className="h-[60vh]">
               <div className="p-3 space-y-3">
                 {grouped[stage]?.map((deal) => (
@@ -108,11 +99,11 @@ export default function DealsPage() {
                     }
                     onDragEnd={() => setDrag(null)}
                     role="button"
-                    aria-label={`Deal ${deal.name}, value ${deal.value}`}
+                    aria-label={`Deal ${deal.dealName}, value ${deal.value}`}
                   >
                     <div className="flex items-start justify-between gap-2">
                       <div>
-                        <div className="font-medium">{deal.name}</div>
+                        <div className="font-medium">{deal.dealName}</div>
                         <div className="text-sm text-muted-foreground">
                           {deal.company}
                         </div>
@@ -121,11 +112,13 @@ export default function DealsPage() {
                         ${deal.value.toLocaleString()}
                       </div>
                     </div>
+
                     <div className="mt-2 flex items-center gap-2 text-xs text-muted-foreground">
                       <span>Owner: {deal.owner}</span>
                       <span aria-hidden>•</span>
-                      <span>Prob: {deal.probability}%</span>
+                      <span>Stage: {deal.stage}</span>
                     </div>
+
                     <div className="mt-3 flex items-center justify-end gap-1">
                       <Button
                         size="sm"
@@ -134,7 +127,7 @@ export default function DealsPage() {
                           setEditing(deal);
                           setFormOpen(true);
                         }}
-                        aria-label={`Edit ${deal.name}`}
+                        aria-label={`Edit ${deal.dealName}`}
                       >
                         Edit
                       </Button>
@@ -142,14 +135,17 @@ export default function DealsPage() {
                         size="sm"
                         variant="ghost"
                         className="text-destructive hover:text-destructive"
-                        onClick={() => setConfirm({ open: true, id: deal.id })}
-                        aria-label={`Delete ${deal.name}`}
+                        onClick={() =>
+                          setConfirm({ open: true, id: String(deal.id) })
+                        }
+                        aria-label={`Delete ${deal.dealName}`}
                       >
                         Delete
                       </Button>
                     </div>
                   </Card>
                 ))}
+
                 {(grouped[stage]?.length ?? 0) === 0 && (
                   <div className="text-sm text-muted-foreground px-1">
                     No deals.

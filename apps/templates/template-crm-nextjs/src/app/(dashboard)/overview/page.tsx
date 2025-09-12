@@ -2,7 +2,7 @@ import { MetricCard } from "@/components/metric-card";
 import { PipelineChart } from "@/components/pipeline-chart";
 import { ActivityFeed } from "@/components/activity-feed";
 import { getInitialActivities } from "@/lib/mock-data";
-import MainTable from "@/components/sales-table/main-table-view";
+import MainDealsTable from "@/components/deals-table/main-table-view";
 
 export default async function OverviewPage() {
   const activities = getInitialActivities();
@@ -46,10 +46,10 @@ export default async function OverviewPage() {
           </div>
         </section>
 
-        {/* Sales Table Section */}
+        {/* Deals Table Section */}
         <section className="w-full" aria-label="Sales data table">
           <div className="w-full min-w-0">
-            <MainTable />
+            <MainDealsTable />
           </div>
         </section>
       </div>

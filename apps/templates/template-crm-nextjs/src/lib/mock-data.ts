@@ -1,4 +1,5 @@
-import type { Contact, Deal } from "./types";
+import type { Contact } from "./types/contacts";
+import type { Deal } from "./types/deals";
 
 export const initialContacts: Contact[] = [
   {
@@ -42,39 +43,43 @@ export const initialContacts: Contact[] = [
 export const initialDeals: Deal[] = [
   {
     id: "d1",
-    name: "Pro Plan 100 seats",
+    dealName: "Pro Plan 100 seats",
     company: "Acme Inc.",
+    email: "acme@mail.com",
     owner: "Jane Doe",
     value: 32000,
-    probability: 40,
-    stage: "Prospecting",
+    closeDate: "2024-12-31",
+    stage: "prospect",
   },
   {
     id: "d2",
-    name: "Enterprise Annual",
+    dealName: "Enterprise Annual",
     company: "Globex",
+    email: "globex@mail.com",
     owner: "John Smith",
     value: 125000,
-    probability: 30,
-    stage: "Qualified",
+    closeDate: "2025-09-12",
+    stage: "negotiation",
   },
   {
     id: "d3",
-    name: "Add-on Security",
+    dealName: "Add-on Security",
     company: "Initech",
+    email: "initech@mail.com",
     owner: "Ana Gomez",
     value: 18000,
-    probability: 50,
-    stage: "Proposal",
+    closeDate: "2025-04-29",
+    stage: "proposal",
   },
   {
     id: "d4",
-    name: "Renewal",
+    dealName: "Renewal",
     company: "Umbrella",
+    email: "umbrella@mail.com",
     owner: "Liam Chen",
     value: 54000,
-    probability: 45,
-    stage: "Negotiation",
+    closeDate: "2025-07-17",
+    stage: "negotiation",
   },
 ];
 

@@ -60,7 +60,7 @@ export function TopNav({ className, userName }: TopNavProps) {
       case "system":
         return <Monitor className="h-4 w-4" />;
       default:
-        return <Monitor className="h-4 w-4" />;
+        return <Sun className="h-4 w-4" />;
     }
   };
 
@@ -98,7 +98,7 @@ export function TopNav({ className, userName }: TopNavProps) {
       <Button
         variant="ghost"
         size="icon"
-        aria-label={getThemeLabel()}
+        aria-label={getThemeLabel() || "Toggle theme"}
         onClick={cycleTheme}
         className="relative"
       >

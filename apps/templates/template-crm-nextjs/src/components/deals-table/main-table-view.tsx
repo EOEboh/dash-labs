@@ -1,22 +1,16 @@
 "use client";
 
 import * as React from "react";
-import { SalesTable } from "@/components/sales-table/sales-table";
-import { useTableSales } from "@/hooks/use-table-sales";
-import type { Deal } from "@/components/sales-table/types";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { DealsTable } from "@/components/deals-table/deals-table";
+import { useTableDeals } from "@/hooks/use-table-deals";
+import type { Deal } from "@/lib/types/deals";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 // import { useToast } from "@/hooks/use-toast"
 
 export default function MainTable() {
   //   const { toast } = useToast()
-  const { data, isLoading, error } = useTableSales();
+  const { data, isLoading, error } = useTableDeals();
   const [selectedDeals, setSelectedDeals] = React.useState<Deal[]>([]);
 
   const handleRowSelect = (contacts: Deal[]) => {
@@ -68,7 +62,7 @@ export default function MainTable() {
           <div className="flex flex-col space-y-4 sm:flex-row sm:items-center sm:justify-between sm:space-y-0">
             <div>
               <CardTitle>
-                <h2 className="text-lg font-semibold mb-4">Sales Data</h2>
+                <h2 className="text-lg font-semibold mb-4">All Deals</h2>
               </CardTitle>
             </div>
             <div className="flex flex-col space-y-2 sm:flex-row sm:space-y-0 sm:space-x-2">
@@ -99,7 +93,7 @@ export default function MainTable() {
         <CardContent className="p-0">
           <div className="overflow-x-auto w-full">
             <div className="min-w-[800px] px-4">
-              <SalesTable
+              <DealsTable
                 data={data ?? []}
                 onRowSelect={handleRowSelect}
                 onView={handleView}
